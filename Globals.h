@@ -74,9 +74,13 @@ int freqenz[] = {0,
                 };
 unsigned char mode_switch_flag;        //Variable  Switch Flag
 unsigned char push_switch_flag;
+unsigned char rotate_left_flag;
+unsigned char rotate_right_flag;
+
+
 
 unsigned char fine_bit=0;     // Variable for frequenz fine tune
-int offset_freq =0;
+int offset_freq =0;           // VAriable for frequenzy fine Offset
 unsigned char mode_var = 1;   //Variable for AM,USB,LSB
 unsigned char channel = 1;    //Variable channel
 

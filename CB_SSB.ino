@@ -24,7 +24,7 @@ void setup()
   start_display();
   //Version();
   mode_dsp(mode_var);
-  channel_dsp(channel,offset_freq);
+  channel_dsp(channel, offset_freq);
   AD0850_set_freq();
   voltage();
   s_meter();
@@ -43,7 +43,8 @@ void loop()
 //*****************************************************************
 {
   button_check();
-  delay(20);
+  rotate_check();
+  
 
 
 }
@@ -58,36 +59,54 @@ ISR(PCINT2_vect)
   }
   else if (result == DIR_CW)
   {
+    rotate_left_flag = true;
+  }
+  else if (result == DIR_CCW)
+  {
+    rotate_right_flag = true;
+  }
+
+
+  AD0850_set_freq();
+}
+
+
+//*****************************************************************
+void rotate_check()
+//*****************************************************************
+{
+  if (rotate_left_flag)
+  {
     if (!fine_bit)
     {
       channel++;
       if (channel > 80)channel = 1;
       offset_freq = 0;
-      channel_dsp(channel,offset_freq);
-    } else 
+      channel_dsp(channel, offset_freq);
+    } else
     {
-    offset_freq  ++;
-    channel_dsp(channel,offset_freq);
+      offset_freq  ++;
+      channel_dsp(channel, offset_freq);
     }
+    rotate_left_flag = false;
   }
-  else if (result == DIR_CCW) 
+  if (rotate_right_flag)
   {
     if (!fine_bit)
     {
       channel--;
       if (channel < 1)channel = 80;
       offset_freq = 0;
-      channel_dsp(channel,offset_freq);
-    } else 
+      channel_dsp(channel, offset_freq);
+    } else
     {
-    offset_freq  --;
-    channel_dsp(channel,offset_freq);
+      offset_freq  --;
+      channel_dsp(channel, offset_freq);
     }
+    rotate_right_flag = false;
   }
-
-  
-  AD0850_set_freq();
 }
+
 //*****************************************************************
 void button_check()
 //*****************************************************************
@@ -112,8 +131,7 @@ void button_check()
     {
 
       fine_bit = !fine_bit;
-      Serial.println(fine_bit);
-      channel_dsp(channel,offset_freq);
+      channel_dsp(channel, offset_freq);
       push_switch_flag = HIGH;
 
     }
