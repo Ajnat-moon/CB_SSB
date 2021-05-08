@@ -65,9 +65,7 @@ ISR(PCINT2_vect)
   {
     rotate_right_flag = true;
   }
-
-
-  AD0850_set_freq();
+ 
 }
 
 
@@ -88,6 +86,7 @@ void rotate_check()
       offset_freq  ++;
       channel_dsp(channel, offset_freq);
     }
+    AD0850_set_freq();
     rotate_left_flag = false;
   }
   if (rotate_right_flag)
@@ -103,6 +102,7 @@ void rotate_check()
       offset_freq  --;
       channel_dsp(channel, offset_freq);
     }
+    AD0850_set_freq();
     rotate_right_flag = false;
   }
 }
