@@ -28,14 +28,22 @@ myVersion Vers(16, false);
 #define TFT_DC   6
 #define TFT_RST  5
 
+
 // For 1.44" and 1.8" TFT with ST7735 (including HalloWing) use:
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
+
+
+//*********************** AD_converter PIN defnition *******************
+int supply = A0;
+int hf_signal = A1; 
+
 
 //*********************** AD9850 PIN defnition *******************
 const int CLK_PIN = 9;
 const int FQ_PIN = 8;
 const int Data_PIN = 7;
 const int RESET_PIN = 10;
+
 
 AH_AD9850 AD9850(CLK_PIN, FQ_PIN, Data_PIN, RESET_PIN);
 
@@ -83,5 +91,8 @@ unsigned char fine_bit=0;     // Variable for frequenz fine tune
 int offset_freq =0;           // VAriable for frequenzy fine Offset
 unsigned char mode_var = 1;   //Variable for AM,USB,LSB
 unsigned char channel = 1;    //Variable channel
+int  timer0=0;                //Variable für TImer2
 
-#define help 15;
+#define R1 10
+#define R2 4.7
+#define voltage_divider ((R1+R2)/R2)   //R1+R2/R2 10k+4,7k/4,7k =

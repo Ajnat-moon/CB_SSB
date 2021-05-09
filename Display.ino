@@ -94,15 +94,18 @@ void channel_dsp(unsigned char  data,int offset)
   
 }
 //*****************************************************************
-void voltage()
+void voltage(int value)
 //*****************************************************************
 {
+  float voltage;
   tft.setRotation(1);
   tft.setTextSize(1);
   tft.setTextColor(ST77XX_YELLOW);
-  tft.setCursor(105, 6
-               );
-  tft.println("12.00 V");
+  tft.fillRect(105, 6 , 30 , 10, ST77XX_BLACK);
+  tft.setCursor(105, 6);
+  voltage = value*0.0049*voltage_divider;
+  tft.print(voltage);
+  tft.println(" V");
 }
 //*****************************************************************
 void s_meter()
@@ -110,7 +113,7 @@ void s_meter()
 {
   tft.setRotation(1);
 
-  tft.fillRect(20, 100 , 80, 10, ST77XX_RED);
+  tft.fillRect(20, 100 , 80, 10, ST77XX_GREEN);
   tft.setTextColor(ST77XX_WHITE);
   tft.setCursor(5, 115);
   tft.setTextSize(1);

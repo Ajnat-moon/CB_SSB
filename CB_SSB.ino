@@ -26,13 +26,20 @@ void setup()
   mode_dsp(mode_var);
   channel_dsp(channel, offset_freq);
   AD0850_set_freq();
-  voltage();
   s_meter();
 
 
   // Configure interrupt for rotary encoder and enable.
   PCICR |= (1 << PCIE2);
   PCMSK2 |= (1 << PCINT18) | (1 << PCINT19);
+
+  //************Timern interrupt ***********************************
+  TCCR2B = 0x00;
+  TCCR2A = 0x00;
+  TCNT2 = 130;
+  TCCR2B |= (1 << CS22) | (1 << CS20); // Prescale 128 (Timer/Counter started)
+  TCCR2B &= ~(1 << CS21);        // CS22=1 CS21=0 CS20=1 -> prescale = 128
+  TIMSK2 |= (1 << TOIE2); //Set the interrupt request
   sei();
 
 
@@ -44,9 +51,36 @@ void loop()
 {
   button_check();
   rotate_check();
-  
+  ad_convert();
 
 
+}
+
+//*****************************************************************
+void ad_convert()
+//*****************************************************************
+{
+  int val;
+  byte i;
+
+  val = analogRead(supply);
+  if(timer0 == 1000)voltage(val);
+
+
+}
+
+
+//*****************************************************************
+ISR(TIMER2_OVF_vect)    //This is the interrupt request Timer
+//*****************************************************************
+{
+  TCNT2=130;
+  timer0++;
+  if(timer0 > 1000)
+  {
+    timer0=0;
+   
+  }
 }
 
 //*****************************************************************
@@ -65,7 +99,7 @@ ISR(PCINT2_vect)
   {
     rotate_right_flag = true;
   }
- 
+
 }
 
 
