@@ -26,7 +26,7 @@ void setup()
   mode_dsp(mode_var);
   channel_dsp(channel, offset_freq);
   AD0850_set_freq();
-  s_meter();
+ 
 
 
   // Configure interrupt for rotary encoder and enable.
@@ -61,10 +61,17 @@ void ad_convert()
 //*****************************************************************
 {
   int val;
+  int val1;
   byte i;
 
   val = analogRead(supply);
-  if(timer0 == 1000)voltage(val);
+  val1 =analogRead(hf_signal);
+  if(timer0 == 500)         //500ms
+  {
+     s_meter(val1);
+    voltage(val);
+    timer0 = 0;
+  }
 
 
 }
@@ -76,11 +83,7 @@ ISR(TIMER2_OVF_vect)    //This is the interrupt request Timer
 {
   TCNT2=130;
   timer0++;
-  if(timer0 > 1000)
-  {
-    timer0=0;
-   
-  }
+  
 }
 
 //*****************************************************************
