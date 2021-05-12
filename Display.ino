@@ -60,7 +60,7 @@ void mode_dsp(unsigned char mod)
 
 
 //*****************************************************************
-void channel_dsp(unsigned char  data,int offset)
+void channel_dsp(unsigned char  data, int offset)
 //*****************************************************************
 {
   char frequenz_string[10] ;
@@ -80,18 +80,18 @@ void channel_dsp(unsigned char  data,int offset)
   tft.print(freqenz[channel] * 0.001, 3);
   if (fine_bit)
   {
-   tft.setTextSize(1);
-   tft.setCursor(85, 70);
-   tft.print(" MHz");
-   tft.setTextSize(2);
-   tft.setCursor(118, 63);
-   tft.println(offset);
-  }else
+    tft.setTextSize(1);
+    tft.setCursor(85, 70);
+    tft.print(" MHz");
+    tft.setTextSize(2);
+    tft.setCursor(118, 63);
+    tft.println(offset);
+  } else
   {
-   tft.setTextSize(2);
-   tft.println(" MHz");
+    tft.setTextSize(2);
+    tft.println(" MHz");
   }
-  
+
 }
 //*****************************************************************
 void voltage(int value)
@@ -103,7 +103,7 @@ void voltage(int value)
   tft.setTextColor(ST77XX_YELLOW);
   tft.fillRect(110, 6 , 30 , 10, ST77XX_BLACK);
   tft.setCursor(110, 6);
-  voltage = value*0.0049*voltage_divider;
+  voltage = value * 0.0049 * voltage_divider;
   tft.print(voltage);
   tft.println(" V");
 }
@@ -111,15 +111,27 @@ void voltage(int value)
 void s_meter(int value)
 //*****************************************************************
 {
+  int temp;
+
+  temp = analogRead(tx_push);
+  
   tft.setRotation(1);
-  tft.fillRect((134-value/6), 100 , 133, 10, ST77XX_BLACK);
-  tft.fillRect(20, 100 , (value/6), 10, ST77XX_GREEN);
+  tft.fillRect((20 + value / 6), 100 , (139 - value / 6), 10, ST77XX_BLACK);
+  if (temp > 100)tft.fillRect(20, 100 , (value / 6), 10, ST77XX_GREEN);
+  else tft.fillRect(20, 100 , (value / 6), 10, ST77XX_RED);
   tft.setTextColor(ST77XX_WHITE);
   tft.setCursor(5, 115);
   tft.setTextSize(1);
   tft.println("S  1  3  5  7  9  +10 +20 ");
-
-  tft.drawRect(0 , 0 , 160, 128, ST77XX_YELLOW);
-  tft.drawLine(0 , 19 , 160, 19, ST77XX_YELLOW);
-  tft.drawLine(0 , 90 , 160, 90, ST77XX_YELLOW);
+  if (temp > 100)
+  {
+   tft.drawRect(0 , 0 , 160, 128, ST77XX_YELLOW);
+   tft.drawLine(0 , 19 , 160, 19, ST77XX_YELLOW);
+   tft.drawLine(0 , 90 , 160, 90, ST77XX_YELLOW);
+  }else
+  {
+   tft.drawRect(0 , 0 , 160, 128, ST77XX_RED);
+   tft.drawLine(0 , 19 , 160, 19, ST77XX_RED);
+   tft.drawLine(0 , 90 , 160, 90, ST77XX_RED); 
+  }
 }

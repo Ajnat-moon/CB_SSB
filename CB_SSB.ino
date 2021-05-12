@@ -26,7 +26,7 @@ void setup()
   mode_dsp(mode_var);
   channel_dsp(channel, offset_freq);
   AD0850_set_freq();
- 
+
 
 
   // Configure interrupt for rotary encoder and enable.
@@ -62,13 +62,15 @@ void ad_convert()
 {
   int val;
   int val1;
+
   byte i;
 
+
   val = analogRead(supply);
-  val1 =analogRead(hf_signal);
-  if(timer0 == 500)         //500ms
+  val1 = analogRead(hf_signal);
+  if (timer0 == 500)        //500ms
   {
-     s_meter(val1);
+    s_meter(val1);
     voltage(val);
     timer0 = 0;
   }
@@ -81,9 +83,9 @@ void ad_convert()
 ISR(TIMER2_OVF_vect)    //This is the interrupt request Timer
 //*****************************************************************
 {
-  TCNT2=130;
+  TCNT2 = 130;
   timer0++;
-  
+
 }
 
 //*****************************************************************
@@ -148,6 +150,11 @@ void rotate_check()
 void button_check()
 //*****************************************************************
 {
+  
+  int temp;
+
+  temp = analogRead(mic_Switch);
+  
   if (digitalRead(mode_sw) == LOW)
   {
     delay(1);
@@ -161,8 +168,9 @@ void button_check()
     }
   } else if (mode_switch_flag == HIGH) mode_switch_flag = LOW;
 
-  if (digitalRead(push_sw) == LOW)
+  if ((digitalRead(push_sw) == LOW) ||(temp>200&&temp<400))
   {
+    Serial.println(temp);
     delay(1);
     if (push_switch_flag == LOW)
     {

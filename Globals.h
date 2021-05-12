@@ -36,6 +36,8 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 //*********************** AD_converter PIN defnition *******************
 int supply = A0;
 int hf_signal = A1; 
+int tx_push = A6;
+int mic_Switch = A3;
 
 
 //*********************** AD9850 PIN defnition *******************
@@ -66,7 +68,7 @@ Rotary r = Rotary(2, 3);
 
 #define mode_sw 16
 #define push_sw 12
-#define dpush_sw 21
+#define TX 21
 
 
 //*********************** Variable *******************
