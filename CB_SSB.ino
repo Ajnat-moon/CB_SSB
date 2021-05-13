@@ -62,15 +62,51 @@ void ad_convert()
 {
   int val;
   int val1;
-
+  int val2;
+  int val3;
   byte i;
-
-
-  val = analogRead(supply);
-  val1 = analogRead(hf_signal);
-  if (timer0 == 500)        //500ms
+ val3 = analogRead(mic_Switch);
+//--------------------Taste Mic CH- +----------------------------------- 
+  if (val3 < 100 )
   {
-    s_meter(val1);
+    delay(1);
+    if (mic_switch_flag1 == LOW)
+    {
+
+      channel--;
+      if (channel < 1)channel = 80;
+      offset_freq = 0;
+      fine_bit =0;
+      channel_dsp(channel, offset_freq);
+      AD0850_set_freq();
+      mic_switch_flag1 =HIGH;
+    }
+  } else if (mic_switch_flag1 == HIGH) mic_switch_flag1 = LOW;
+//--------------------Taste Mic CH+ ----------------------------------- 
+if (val3 > 580 && val3 < 750)
+  {
+    delay(1);
+    if (mic_switch_flag2 == LOW)
+    {
+
+      channel++;
+      if (channel > 80)channel = 1;
+      offset_freq = 0;
+      fine_bit =0;
+      channel_dsp(channel, offset_freq);
+      AD0850_set_freq();
+      mic_switch_flag2 =HIGH;
+    }
+  } else if (mic_switch_flag2 == HIGH) mic_switch_flag2 = LOW;
+
+//--------------------Taste TX +----------------------------------- 
+
+  if (timer0 > 500)        //500ms
+  {
+    val = analogRead(supply);
+    val1 = analogRead(hf_signal);
+    val2 = analogRead(tx_push);
+    s_meter(val1, val2);
     voltage(val);
     timer0 = 0;
   }
@@ -150,11 +186,12 @@ void rotate_check()
 void button_check()
 //*****************************************************************
 {
-  
-  int temp;
 
+  int temp;
   temp = analogRead(mic_Switch);
-  
+
+//--------------------Taste mode ---------------------------------- 
+
   if (digitalRead(mode_sw) == LOW)
   {
     delay(1);
@@ -168,7 +205,9 @@ void button_check()
     }
   } else if (mode_switch_flag == HIGH) mode_switch_flag = LOW;
 
-  if ((digitalRead(push_sw) == LOW) ||(temp>200&&temp<400))
+//--------------------Taste push fine Mic ---------------------------
+ 
+  if ((digitalRead(push_sw) == LOW) || (temp > 200 && temp < 400))
   {
     Serial.println(temp);
     delay(1);

@@ -108,12 +108,12 @@ void voltage(int value)
   tft.println(" V");
 }
 //*****************************************************************
-void s_meter(int value)
+void s_meter(int value,int temp)
 //*****************************************************************
 {
-  int temp;
+ 
 
-  temp = analogRead(tx_push);
+  
   
   tft.setRotation(1);
   tft.fillRect((20 + value / 6), 100 , (139 - value / 6), 10, ST77XX_BLACK);

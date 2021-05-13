@@ -84,6 +84,8 @@ int freqenz[] = {0,
                 };
 unsigned char mode_switch_flag;        //Variable  Switch Flag
 unsigned char push_switch_flag;
+unsigned char mic_switch_flag1;
+unsigned char mic_switch_flag2;
 unsigned char rotate_left_flag;
 unsigned char rotate_right_flag;
 
