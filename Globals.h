@@ -100,3 +100,4 @@ int  timer0=0;                //Variable für TImer2
 #define R1 10
 #define R2 4.7
 #define voltage_divider ((R1+R2)/R2)   //R1+R2/R2 10k+4,7k/4,7k =
+#define PCF8574_mic (0x20)

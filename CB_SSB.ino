@@ -15,12 +15,14 @@ void setup()
   Serial.begin(9600);
   pinMode(mode_sw, INPUT_PULLUP );
   pinMode(push_sw, INPUT_PULLUP );
-  //pinMode(TasteFreq, INPUT_PULLUP);
-  //digitalWrite(TasteFreq, HIGH); //Pullups
   analogReference(DEFAULT);
+  Wire.begin();
   AD9850.reset();                   //reset module
 
-
+  Wire.beginTransmission(PCF8574_mic);
+  Wire.write(0x00);
+  Wire.endTransmission();
+  
   start_display();
   //Version();
   mode_dsp(mode_var);
