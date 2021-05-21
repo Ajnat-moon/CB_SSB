@@ -19,13 +19,12 @@ void setup()
   Wire.begin();
   AD9850.reset();                   //reset module
 
-  Wire.beginTransmission(PCF8574_mic);
-  Wire.write(0x00);
-  Wire.endTransmission();
+  
   
   start_display();
   //Version();
   mode_dsp(mode_var);
+  audio_mode(Audio_in);
   channel_dsp(channel, offset_freq);
   AD0850_set_freq();
 
@@ -43,7 +42,9 @@ void setup()
   TCCR2B &= ~(1 << CS21);        // CS22=1 CS21=0 CS20=1 -> prescale = 128
   TIMSK2 |= (1 << TOIE2); //Set the interrupt request
   sei();
-
+  Wire.beginTransmission(PCF8574_mic);
+  Wire.write(0x00);
+  Wire.endTransmission();
 
 }
 
@@ -66,6 +67,7 @@ void ad_convert()
   int val1;
   int val2;
   int val3;
+  int val4;
   byte i;
  val3 = analogRead(mic_Switch);
 //--------------------Taste Mic CH- +----------------------------------- 
@@ -100,6 +102,23 @@ if (val3 > 580 && val3 < 750)
       mic_switch_flag2 =HIGH;
     }
   } else if (mic_switch_flag2 == HIGH) mic_switch_flag2 = LOW;
+
+
+//--------------------Taste Audio ----------------------------------- 
+val4 = analogRead(audio_push);
+if (val4 < 580)
+  {
+    delay(1);
+    if (audio_switch_flag == LOW)
+    {
+
+      Audio_in++;
+      if (Audio_in > 1)Audio_in = 0;
+      audio_mode(Audio_in);
+      audio_switch_flag =HIGH;
+    }
+  } else if (audio_switch_flag == HIGH) audio_switch_flag = LOW;
+
 
 //--------------------Taste TX +----------------------------------- 
 

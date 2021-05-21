@@ -37,6 +37,7 @@ Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 int supply = A0;
 int hf_signal = A1; 
 int tx_push = A6;
+int audio_push=A7;
 int mic_Switch = A3;
 
 
@@ -88,6 +89,7 @@ unsigned char mic_switch_flag1;
 unsigned char mic_switch_flag2;
 unsigned char rotate_left_flag;
 unsigned char rotate_right_flag;
+unsigned char audio_switch_flag;
 
 
 
@@ -96,6 +98,7 @@ int offset_freq =0;           // VAriable for frequenzy fine Offset
 unsigned char mode_var = 1;   //Variable for AM,USB,LSB
 unsigned char channel = 1;    //Variable channel
 int  timer0=0;                //Variable für TImer2
+unsigned char Audio_in=0;
 
 #define R1 10
 #define R2 4.7

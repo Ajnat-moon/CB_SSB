@@ -56,11 +56,38 @@ void mode_dsp(unsigned char mod)
       tft.print("LSB");
       break;
   }
-  Wire.beginTransmission(PCF8574_mic);
-  Wire.write(0x01);
-  Wire.endTransmission();
+
 }
 
+//*****************************************************************
+void audio_mode(unsigned char audio)
+//*****************************************************************
+{
+  Serial.print("audio_mode: ");
+  Serial.println(audio);
+  tft.setTextColor(ST77XX_YELLOW);
+  tft.setRotation(1);
+  tft.setTextSize(1);
+  tft.fillRect(10, 6 , 100 , 10, ST77XX_BLACK);
+  tft.setCursor(10, 6);
+  switch (audio)
+  {
+    case 0:
+      tft.print("Voice");
+      Wire.beginTransmission(PCF8574_mic);
+      Wire.write(0x01);
+      Wire.endTransmission();
+      break;
+    case 1:
+      tft.print("Dual_Tone");
+      Wire.beginTransmission(PCF8574_mic);
+      Wire.write(0x00);
+      Wire.endTransmission();
+      break;
+
+  }
+
+}
 
 //*****************************************************************
 void channel_dsp(unsigned char  data, int offset)
@@ -109,6 +136,7 @@ void voltage(int value)
   voltage = value * 0.0049 * voltage_divider;
   tft.print(voltage);
   tft.println(" V");
+
 }
 //*****************************************************************
 void s_meter(int value, int temp)
