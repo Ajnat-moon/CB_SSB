@@ -42,10 +42,7 @@ void setup()
   TCCR2B &= ~(1 << CS21);        // CS22=1 CS21=0 CS20=1 -> prescale = 128
   TIMSK2 |= (1 << TOIE2); //Set the interrupt request
   sei();
-  Wire.beginTransmission(PCF8574_mic);
-  Wire.write(0x00);
-  Wire.endTransmission();
-
+  
 }
 
 //*****************************************************************
@@ -66,12 +63,12 @@ void ad_convert()
   int val;
   int val1;
   int val2;
-  int val3;
-  int val4;
+  int mic_Switch_Val;
+  int audio_Switch_Val;
   byte i;
- val3 = analogRead(mic_Switch);
+ mic_Switch_Val = analogRead(mic_Switch);
 //--------------------Taste Mic CH- +----------------------------------- 
-  if (val3 < 100 )
+  if (mic_Switch_Val < 100 )
   {
     delay(1);
     if (mic_switch_flag1 == LOW)
@@ -87,7 +84,7 @@ void ad_convert()
     }
   } else if (mic_switch_flag1 == HIGH) mic_switch_flag1 = LOW;
 //--------------------Taste Mic CH+ ----------------------------------- 
-if (val3 > 580 && val3 < 750)
+if (mic_Switch_Val > 580 && mic_Switch_Val < 750)
   {
     delay(1);
     if (mic_switch_flag2 == LOW)
@@ -105,10 +102,10 @@ if (val3 > 580 && val3 < 750)
 
 
 //--------------------Taste Audio ----------------------------------- 
-val4 = analogRead(audio_push);
-if (val4 < 580)
+audio_Switch_Val = analogRead(audio_push);
+if (audio_Switch_Val < 880)
   {
-    delay(1);
+    delay(10);
     if (audio_switch_flag == LOW)
     {
 
